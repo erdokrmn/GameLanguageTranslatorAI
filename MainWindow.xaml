@@ -1,0 +1,75 @@
+﻿<Window x:Class="GameTranslator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GameTranslator"
+        mc:Ignorable="d"
+        Title="Oyun Dil Dosyası Çeviri Aracı" Height="650" Width="900">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <GroupBox Header="Dosya Seçimi" Grid.Row="0" Margin="0,5">
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="txtFilePath" IsReadOnly="True" Grid.Column="0" Margin="0,0,5,0"/>
+                <Button x:Name="btnBrowse" Content="Dosya Seç" Grid.Column="1" Width="100" Click="BtnBrowse_Click"/>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Ayarlar" Grid.Row="1" Margin="0,5">
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Kaynak Dil:" Grid.Column="0" VerticalAlignment="Center"/>
+                <ComboBox x:Name="cmbSourceLang" Grid.Column="1" Margin="5"/>
+                <Label Content="Hedef Dil:" Grid.Column="2" VerticalAlignment="Center"/>
+                <ComboBox x:Name="cmbTargetLang" Grid.Column="3" Margin="5"/>
+                <Label Content="Format:" Grid.Column="4" VerticalAlignment="Center"/>
+                <ComboBox x:Name="cmbFormat" Grid.Column="5" Margin="5"/>
+            </Grid>
+        </GroupBox>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="0,10">
+            <Button x:Name="btnAnalyze" Content="Dosyayı Analiz Et" Width="150" Height="30" Margin="5,0" Click="BtnAnalyze_Click"/>
+            <Button x:Name="btnTranslate" Content="Çeviriyi Başlat" Width="150" Height="30" Margin="5,0" Click="BtnTranslate_Click"/>
+        </StackPanel>
+
+        <GroupBox Header="Önizleme" Grid.Row="3" Margin="0,5">
+            <DataGrid x:Name="dataGridPreview" AutoGenerateColumns="False" Height="150" Margin="5">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Yol" Binding="{Binding Path}" Width="300"/>
+                    <DataGridTextColumn Header="Orijinal Metin" Binding="{Binding OriginalText}" Width="*"/>
+                    <DataGridTextColumn Header="Çevrilen Metin" Binding="{Binding TranslatedText}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+
+        <GroupBox Header="İşlem Günlüğü" Grid.Row="4" Margin="0,5">
+            <TextBox x:Name="txtLog" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Margin="5"/>
+        </GroupBox>
+
+        <ProgressBar x:Name="progressBar" Grid.Row="5" Height="20" Margin="0,5"/>
+
+        <StatusBar Grid.Row="6" Height="25">
+            <StatusBarItem x:Name="statusBar" Content="Hazır"/>
+        </StatusBar>
+    </Grid>
+</Window>

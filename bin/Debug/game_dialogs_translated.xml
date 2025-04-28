@@ -1,0 +1,7 @@
+game/menu/start: Oyunu Başlat
+game/menu/options: Seçenekler
+game/menu/exit: Oyundan Çık
+game/gameplay/win: Seviye Tamamlandı!
+game/gameplay/lose: Oyun Bitti
+game/dialogues/npc/greet: Merhaba, yolcu!
+game/dialogues/npc/farewell: Güvenli yolculuklar, kahraman!
