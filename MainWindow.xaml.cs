@@ -63,7 +63,6 @@ namespace GameTranslator
             set { progressBar.Value = value; }  // ProgressBar'ı güncellemek için
         }
 
-
         private void InitializeUI()
         {
             // Dil seçeneklerini doldur
@@ -425,6 +424,31 @@ namespace GameTranslator
             {
                 // 1. Bütün metinleri birleştir
                 string combinedText = string.Join(" ||| ", translationItems.Select(x => x.OriginalText));
+                // 2. Token ve Maliyet Hesabı
+                int inputTokens = EstimateTokenCount(combinedText);
+                int outputTokens = (int)(inputTokens * 1.5); // Çıkış tahmini input * 1.5
+                int totalTokens = inputTokens + outputTokens;
+
+                // 3. Tahmini Ücret Hesabı
+                // GPT-4o: input token 0.0005$, output token 0.0015$
+                double estimatedCost = (inputTokens * 0.0005 + outputTokens * 0.0015) / 1000.0;
+
+                // 4. Kullanıcıya gösterim
+                string message = $"Tahmini Input Token: {inputTokens}\n" +
+                                 $"Tahmini Output Token: {outputTokens}\n" +
+                                 $"Toplam Token: {totalTokens}\n" +
+                                 $"Tahmini Ücret: ${estimatedCost:F6}\n\n" +
+                                 $"Devam etmek istiyor musunuz?";
+
+                var result = MessageBox.Show(message, "Maliyet Bilgisi", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result != MessageBoxResult.Yes)
+                {
+                    LogMessage("Kullanıcı işlemi iptal etti.");
+                    statusBar.Content = "İşlem iptal edildi.";
+                    return; // Kullanıcı hayır dediyse API isteği yapılmayacak
+                }
+
 
                 // 2. Tek API çağrısı
                 var translatedCombinedText = await TranslateTextAsync(combinedText, sourceLang, targetLang);
@@ -540,8 +564,6 @@ namespace GameTranslator
             }
         }
 
-
-
         private void SaveTranslatedFile()
         {
             try
@@ -583,8 +605,6 @@ namespace GameTranslator
                 LogMessage($"🚫 Dosya kaydetme hatası: {ex.Message}");
             }
         }
-
-
 
 
         private XElement FindXmlElement(XElement root, string path)
@@ -778,6 +798,26 @@ namespace GameTranslator
             }
         }
 
+        private int EstimateTokenCount(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                return 0;
+
+            int tokenCount = 0;
+
+            // Split by boşluklar ve noktalama işaretleri
+            var words = text.Split(new char[] { ' ', '\n', '\r', '\t', '.', ',', '!', '?', ';', ':', '-', '(', ')', '[', ']', '{', '}', '"', '\'' }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var word in words)
+            {
+                if (word.Length <= 4)
+                    tokenCount += 1; // Kısa kelimeler genelde 1 token
+                else
+                    tokenCount += (int)Math.Ceiling(word.Length / 4.0); // Uzun kelimeleri 4 karaktere 1 token gibi düşün
+            }
+
+            return tokenCount;
+        }
 
         private void LogMessage(string message)
         {
