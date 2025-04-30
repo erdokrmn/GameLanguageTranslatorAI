@@ -50,7 +50,7 @@ namespace GameTranslator
         };
 
         // API Anahtarınız
-        private string apiKey = "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";
+        private string apiKey = "YOUR-OPENAI-API";
 
         public MainWindow()
         {
