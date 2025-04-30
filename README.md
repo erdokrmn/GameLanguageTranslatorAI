@@ -1,6 +1,6 @@
 # GameLanguageTranslatorAI
 
-![Uygulama Görseli](demo.png)
+![Uygulama Görseli](erdokrmn/GameLanguageTranslatorAI/blob/main/demo.PNG)
 
 GameLanguageTranslatorAI, oyun geliştiricileri için oyun içi metinleri farklı dillere çevirmeyi kolaylaştıran bir araçtır. OpenAI'nin güçlü dil modellerini kullanarak, oyun içeriğinizin hızlı ve doğru bir şekilde lokalizasyonunu sağlar.
 
